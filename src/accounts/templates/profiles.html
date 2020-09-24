@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if not request.user.profile  %}
+<button onclick="window.location.href='/profiles/add'">Add own profile</button>
+{% endif %}
+
+{% for i in result %}
+<br><a href="{% url 'profiles:show' i.id  %}">go to</a>
+<br>{{ i.nickname }}
+<br><a>______</a>
+{% endfor %}
+
+{% endblock %}
