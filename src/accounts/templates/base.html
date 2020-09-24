@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static "my.css" %}">
+</head>
+
+<body>
+
+
+<div class="topnav">
+    <img class="logo"  src="{% static "img/logo.png" %} ">
+    <a class="active" href="#home">home</a>
+    <a href="#news">likes</a>
+    <a href="#about">direct</a>
+    <form class="nav-search">
+        <input type="search" name="search" placeholder="Search" value="{{request.GET.search}}">
+    </form>
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
