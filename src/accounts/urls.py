@@ -1,5 +1,5 @@
 from django.urls import path
-from accounts.views import ProfilesListView, ProfileCreateView, ProfileDetailView, ProfileEditView, ProfileDeleteView
+from accounts.views import ProfilesListView, ProfileCreateView, ProfileDetailView, ProfileEditView, UserDeleteView
 
 app_name = 'profiles'
 
@@ -8,5 +8,5 @@ urlpatterns = [
     path('add/', ProfileCreateView.as_view(), name='add'),
     path('edit/<item_id>', ProfileEditView.as_view(), name='edit'),
     path('show/<item_id>', ProfileDetailView.as_view(), name='show'),
-    path('delete/<item_id>', ProfileDeleteView.as_view(), name='delete'),
+    path('delete/<item_id>', UserDeleteView.as_view(), name='delete'),
 ]

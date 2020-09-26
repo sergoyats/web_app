@@ -2,8 +2,10 @@
 {% block content %}
 
 
-{% if not request.user.profile  %}
-<button onclick="window.location.href='/profiles/add'">Add own profile</button>
+{% if request.user.is_authenticated  %}
+<button onclick="window.location.href='/account/logout'">Logout</button>
+{% else %}
+<button onclick="window.location.href='/account/login'">Login</button>
 {% endif %}
 
 {% for i in result %}

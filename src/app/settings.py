@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'django_extensions'
+    'django_extensions',
+    'custom_auth',
 ]
 
 MIDDLEWARE = [
@@ -79,12 +80,10 @@ DATABASES = {
         'USER': 'user',
         'PASSWORD': 'pass',
         'HOST': 'localhost',
+        # 'HOST': '192.168.99.100',  # virtual machine IP-address
         'PORT': '5432'
     }
 }
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # DATABASES = {
 #     'default': {
@@ -139,3 +138,5 @@ LOGIN_REDIRECT_URL = '/profiles/'
 
 
 ADMIN_GROUP = 'admin_application'
+LOGIN_URL = '/account/login'
+LOGOUT_REDIRECT_URL = '/profiles/'
