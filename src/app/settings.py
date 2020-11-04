@@ -8,11 +8,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.http import UnreadablePostError
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -24,7 +23,6 @@ SECRET_KEY = 'rh@)cs0nup-8y$i*wb_7nktxd50r1sjc=k!kk=3=rat_#+g@55'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
 
 # Application definition
 
@@ -38,9 +36,11 @@ INSTALLED_APPS = [
     'accounts',
     'django_extensions',
     'custom_auth',
+    'core',
 ]
 
 MIDDLEWARE = [
+    'core.middleware.PerformanceMonitoringMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 DATABASES = {
@@ -79,8 +78,9 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'user',
         'PASSWORD': 'pass',
-        'HOST': 'localhost',
+        # 'HOST': 'localhost',
         # 'HOST': '192.168.99.100',  # virtual machine IP-address
+        'HOST': 'db',
         'PORT': '5432'
     }
 }
@@ -103,13 +103,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    #     'NAME': 'django.contrib.custom_auth.password_validation.CommonPasswordValidator',
     # },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -124,7 +123,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -136,7 +134,58 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = '/profiles/'
 
-
 ADMIN_GROUP = 'admin_application'
 LOGIN_URL = '/account/login'
 LOGOUT_REDIRECT_URL = '/profiles/'
+MAX_RESPONSE_TIME = 2  # in seconds
+LOG_RECORDS_COUNT = 20  # count of rows
+
+
+def ignore_unfilled_description(description):
+    if description.exc_info:
+        exc_type, exc_value = description.exc_info[None]
+        if isinstance(exc_value, UnreadablePostError):
+            return False
+    return True
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        }
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'ignore_unfilled_description': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': ignore_unfilled_description,
+        }
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'filename': 'info.log',
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['ignore_unfilled_description'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
