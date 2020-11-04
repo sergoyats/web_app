@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if request.user.is_authenticated  %}
+<button onclick="window.location.href='/account/logout'">Logout</button>
+{% else %}
+<button onclick="window.location.href='/account/login'">Login</button>
+{% endif %}
+
+{% for i in result %}
+<br><a href="{% url 'profiles:show' i.id  %}">go to</a>
+<br>{{ i.nickname }}
+<br><a>______</a>
+{% endfor %}
+
+{% endblock %}

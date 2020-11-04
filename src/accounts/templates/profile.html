@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% load has_group %}
+{% if request.user == profile.user or request.user|has_group:"admin_application" %}
+{# {% if request.user == profile.user %} #}
+<button onclick="window.location.href='/profiles/edit/{{profile.id}}'">Edit</button>
+<button onclick="window.location.href='/profiles/delete/{{profile.id}}'">Delete</button>
+{% endif %}
+
+<br>Nickname: {{profile.nickname}}
+<br>Bio: {{profile.bio}}
+<br>Age: {{profile.age}}
+
+
+{% endblock %}

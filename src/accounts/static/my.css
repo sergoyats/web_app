@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  text-align: center;
+  background-color: #eee;
+  font-family: Courier, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.topnav a {
+  float: right;
+  color: #aaa;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  color: grey;
+}
+
+.topnav a.active {
+  color: black;
+}
+
+.logo {
+    height: 40px;
+    width: 180px;
+    padding: 5px 0px;
+    float: left;
+}
+
+.nav-search {
+    padding: 14px 16px;
+    float: center;
+}
