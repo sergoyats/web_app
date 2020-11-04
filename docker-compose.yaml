@@ -2,6 +2,18 @@ version: "2"
 
 services:
 
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    depends_on:
+      - db
+    environment:
+      DJANGO_SU_EMAIL: ${DJANGO_SU_EMAIL}
+      DJANGO_SU_PASSWORD: ${DJANGO_SU_PASSWORD}
+
   db:
     image: "postgres:10"
     env_file:
@@ -11,8 +23,8 @@ services:
 #      POSTGRES_USER: ${POSTGRES_USER}
 #      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
-    volumes:
-      - ./data:/var/lib/postgresql/data
+#    volumes:
+#      - ./data:/var/lib/postgresql/data
 
     ports:
       - "5432:5432"
