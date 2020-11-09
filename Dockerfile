@@ -4,4 +4,4 @@ COPY ./requirements.txt /app
 RUN pip install -r requirements.txt
 COPY . /app
 WORKDIR /app/src
-CMD gunicorn app.wsgi:application
+CMD gunicorn app.wsgi:application --bind 0.0.0.0:8000
